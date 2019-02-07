@@ -382,7 +382,15 @@ const char* Utils::GetRecordingFolder() {
 
 	if (outputMode == "Advanced") {
 		// Advanced mode
-		return config_get_string(profile, "AdvOut", "RecFilePath");
+		QString recType = config_get_string(profile, "AdvOut", "RecType");
+
+		if(recType == "FFmpeg") {
+			// Custom Output(FFmpeg)
+			return config_get_string(profile, "AdvOut", "FFFilePath");
+		} else {
+			// Standard
+			return config_get_string(profile, "AdvOut", "RecFilePath");
+		}
 	} else {
 		// Simple mode
 		return config_get_string(profile, "SimpleOutput", "FilePath");
@@ -398,7 +406,15 @@ bool Utils::SetRecordingFolder(const char* path) {
 	QString outputMode = config_get_string(profile, "Output", "Mode");
 
 	if (outputMode == "Advanced") {
-		config_set_string(profile, "AdvOut", "RecFilePath", path);
+		QString recType = config_get_string(profile, "AdvOut", "RecType");
+
+		if(recType == "FFmpeg") {
+			// Custom Output(FFmpeg)
+			config_set_string(profile, "AdvOut", "FFFilePath", path);
+		} else {
+			// Standard
+			config_set_string(profile, "AdvOut", "RecFilePath", path);
+		}
 	} else {
 		config_set_string(profile, "SimpleOutput", "FilePath", path);
 	}
