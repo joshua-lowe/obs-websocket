@@ -676,8 +676,8 @@ void WSEvents::StreamStatus() {
  * @return {string} `file-path` The path to the recording output file.
  *
  * @api events
- * @name RecrodStatus
- * @category recroding
+ * @name RecordStatus
+ * @category recording
  * @since 4.0
  */
 void WSEvents::RecordStatus() {

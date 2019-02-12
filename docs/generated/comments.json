@@ -775,6 +775,85 @@
         "lead": "",
         "type": "class",
         "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Emit every 2 seconds.",
+        "return": [
+          "{boolean} `recording` Current recording state.",
+          "{int} `bytes-written` Amount of data per second (in bytes) transmitted by the stream encoder.",
+          "{int} `total-record-time` Total time (in seconds) since the stream started.",
+          "{int} `num-total-frames` Total number of frames transmitted since the stream started.",
+          "{int} `num-dropped-frames` Number of frames dropped by the encoder since the stream started.",
+          "{double} `fps` Current framerate.",
+          "{string} `file-path` The path to the recording output file."
+        ],
+        "api": "events",
+        "name": "RecordStatus",
+        "category": "recording",
+        "since": "4.0",
+        "returns": [
+          {
+            "type": "boolean",
+            "name": "recording",
+            "description": "Current recording state."
+          },
+          {
+            "type": "int",
+            "name": "bytes-written",
+            "description": "Amount of data per second (in bytes) transmitted by the stream encoder."
+          },
+          {
+            "type": "int",
+            "name": "total-record-time",
+            "description": "Total time (in seconds) since the stream started."
+          },
+          {
+            "type": "int",
+            "name": "num-total-frames",
+            "description": "Total number of frames transmitted since the stream started."
+          },
+          {
+            "type": "int",
+            "name": "num-dropped-frames",
+            "description": "Number of frames dropped by the encoder since the stream started."
+          },
+          {
+            "type": "double",
+            "name": "fps",
+            "description": "Current framerate."
+          },
+          {
+            "type": "string",
+            "name": "file-path",
+            "description": "The path to the recording output file."
+          }
+        ],
+        "names": [
+          {
+            "name": "",
+            "description": "RecordStatus"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "recording"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "4.0"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "RecordStatus"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
       }
     ],
     "replay buffer": [
@@ -940,87 +1019,6 @@
         "heading": {
           "level": 2,
           "text": "Exiting"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      }
-    ],
-    "recroding": [
-      {
-        "subheads": [],
-        "description": "Emit every 2 seconds.",
-        "return": [
-          "{boolean} `recording` Current recording state.",
-          "{int} `bytes-written` Amount of data per second (in bytes) transmitted by the stream encoder.",
-          "{int} `total-record-time` Total time (in seconds) since the stream started.",
-          "{int} `num-total-frames` Total number of frames transmitted since the stream started.",
-          "{int} `num-dropped-frames` Number of frames dropped by the encoder since the stream started.",
-          "{double} `fps` Current framerate.",
-          "{string} `file-path` The path to the recording output file."
-        ],
-        "api": "events",
-        "name": "RecrodStatus",
-        "category": "recroding",
-        "since": "4.0",
-        "returns": [
-          {
-            "type": "boolean",
-            "name": "recording",
-            "description": "Current recording state."
-          },
-          {
-            "type": "int",
-            "name": "bytes-written",
-            "description": "Amount of data per second (in bytes) transmitted by the stream encoder."
-          },
-          {
-            "type": "int",
-            "name": "total-record-time",
-            "description": "Total time (in seconds) since the stream started."
-          },
-          {
-            "type": "int",
-            "name": "num-total-frames",
-            "description": "Total number of frames transmitted since the stream started."
-          },
-          {
-            "type": "int",
-            "name": "num-dropped-frames",
-            "description": "Number of frames dropped by the encoder since the stream started."
-          },
-          {
-            "type": "double",
-            "name": "fps",
-            "description": "Current framerate."
-          },
-          {
-            "type": "string",
-            "name": "file-path",
-            "description": "The path to the recording output file."
-          }
-        ],
-        "names": [
-          {
-            "name": "",
-            "description": "RecrodStatus"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "recroding"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "4.0"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "RecrodStatus"
         },
         "lead": "",
         "type": "class",
