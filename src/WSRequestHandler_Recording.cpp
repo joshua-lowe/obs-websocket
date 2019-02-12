@@ -1,7 +1,39 @@
 #include <QString>
 #include "Utils.h"
+#include "WSEvents.h"
 
 #include "WSRequestHandler.h"
+
+ /**
+ * Get current recording status.
+ * 
+ * @return {boolean} `recording` Current recording status.
+ * @return {String (optional)} `stream-timecode` Time elapsed since streaming started (only present if currently streaming).
+ * @return {String (optional)} `rec-timecode` Time elapsed since recording started (only present if currently recording).
+ * @return {boolean} `preview-only` Always false. Retrocompatibility with OBSRemote.
+ *
+ * @api requests
+ * @name GetStreamingStatus
+ * @category streaming
+ * @since 0.3
+ */
+HandlerResponse WSRequestHandler::HandleGetRecordingStatus(WSRequestHandler* req) {
+	auto events = WSEvents::Current();
+	 
+	OBSDataAutoRelease data = obs_data_create();
+	obs_data_set_bool(data, "recording", obs_frontend_recording_active());
+	obs_data_set_bool(data, "preview-only", false);
+
+	const char* tc = nullptr;
+	if (obs_frontend_recording_active()) {
+		tc = events->GetRecordingTimecode();
+		obs_data_set_string(data, "rec-timecode", tc);
+		bfree((void*)tc);
+	}
+
+	return req->SendOKResponse(data);
+}
+
 
 /**
  * Toggle recording on or off.

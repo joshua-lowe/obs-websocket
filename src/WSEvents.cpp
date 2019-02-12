@@ -83,6 +83,8 @@ WSEvents::WSEvents(WSServerPtr srv) {
 	QTimer* statusTimer = new QTimer();
 	connect(statusTimer, SIGNAL(timeout()),
 		this, SLOT(StreamStatus()));
+	connect(statusTimer, SIGNAL(timeout()),
+		this, SLOT(RecordStatus()));
 	pulse = false;
 	connect(statusTimer, SIGNAL(timeout()),
 		this, SLOT(Heartbeat()));
@@ -663,6 +665,55 @@ void WSEvents::StreamStatus() {
 }
 
 /**
+ * Emit every 2 seconds.
+ *
+ * @return {boolean} `recording` Current recording state.
+ * @return {int} `bytes-written` Amount of data per second (in bytes) transmitted by the stream encoder.
+ * @return {int} `total-record-time` Total time (in seconds) since the stream started.
+ * @return {int} `num-total-frames` Total number of frames transmitted since the stream started.
+ * @return {int} `num-dropped-frames` Number of frames dropped by the encoder since the stream started.
+ * @return {double} `fps` Current framerate.
+ * @return {string} `file-path` The path to the recording output file.
+ *
+ * @api events
+ * @name StreamStatus
+ * @category streaming
+ * @since 4.0
+ */
+void WSEvents::RecordStatus() {
+	bool recordingActive = obs_frontend_recording_active();
+
+	OBSOutputAutoRelease recordOutput = obs_frontend_get_recording_output();
+	//os_cpu_usage_info_query
+
+	if (!recordOutput || !recordingActive) {
+		return;
+	}
+
+	uint64_t totalRecordTime =
+		(os_gettime_ns() - _recStarttime) / 1000000000;
+
+	uint64_t bytesWritten = obs_output_get_total_bytes(recordOutput);
+
+	int totalFrames = obs_output_get_total_frames(recordOutput);
+	int droppedFrames = obs_output_get_frames_dropped(recordOutput);
+
+	OBSDataAutoRelease recordSettings = obs_output_get_settings(recordOutput);
+
+	OBSDataAutoRelease data = obs_data_create();
+	obs_data_set_bool(data, "recording", recordingActive);
+	obs_data_set_int(data, "bytes-written", bytesWritten);
+	obs_data_set_int(data, "total-record-time", totalRecordTime);
+	obs_data_set_int(data, "num-total-frames", totalFrames);
+	obs_data_set_int(data, "num-dropped-frames", droppedFrames);
+	obs_data_set_double(data, "fps", obs_get_active_fps());
+	obs_data_set_string(data, "file-path",
+		obs_data_get_string(recordSettings, "url"));
+
+	broadcastUpdate("RecordStatus", data);
+}
+
+/**
  * Emitted every 2 seconds after enabling it by calling SetHeartbeat.
  *
  * @return {boolean} `pulse` Toggles between every JSON message as an "I am alive" indicator.
@@ -676,6 +727,7 @@ void WSEvents::StreamStatus() {
  * @return {int (optional)} `total-record-time` Total time (in seconds) since recording started.
  * @return {int (optional)} `total-record-bytes` Total bytes recorded since the recording started.
  * @return {int (optional)} `total-record-frames` Total frames recorded since the recording started.
+ * @return {int (optional)} `total-record-dropped` Total frames dropped since the recording started.
  *
  * @api events
  * @name Heartbeat
@@ -714,6 +766,8 @@ void WSEvents::Heartbeat() {
 		obs_data_set_int(data, "total-record-time", totalRecordTime);
 		obs_data_set_int(data, "total-record-bytes", (uint64_t)obs_output_get_total_bytes(recordOutput));
 		obs_data_set_int(data, "total-record-frames", obs_output_get_total_frames(recordOutput));
+		obs_data_set_int(data, "total-record-dropped", obs_output_get_frames_dropped(recordOutput));
+
 	}
 
 	broadcastUpdate("Heartbeat", data);

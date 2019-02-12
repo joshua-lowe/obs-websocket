@@ -641,6 +641,91 @@
         "lead": "",
         "type": "class",
         "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Emit every 2 seconds.",
+        "return": [
+          "{boolean} `recording` Current recording state.",
+          "{int} `bytes-written` Amount of data per second (in bytes) transmitted by the stream encoder.",
+          "{int} `kbits-written` Amount of data per second (in kilobits) transmitted by the stream encoder.",
+          "{int} `total-record-time` Total time (in seconds) since the stream started.",
+          "{int} `num-total-frames` Total number of frames transmitted since the stream started.",
+          "{int} `num-dropped-frames` Number of frames dropped by the encoder since the stream started.",
+          "{double} `fps` Current framerate.",
+          "{string} `file-path` The path to the recording output file."
+        ],
+        "api": "events",
+        "name": "StreamStatus",
+        "category": "streaming",
+        "since": "4.0",
+        "returns": [
+          {
+            "type": "boolean",
+            "name": "recording",
+            "description": "Current recording state."
+          },
+          {
+            "type": "int",
+            "name": "bytes-written",
+            "description": "Amount of data per second (in bytes) transmitted by the stream encoder."
+          },
+          {
+            "type": "int",
+            "name": "kbits-written",
+            "description": "Amount of data per second (in kilobits) transmitted by the stream encoder."
+          },
+          {
+            "type": "int",
+            "name": "total-record-time",
+            "description": "Total time (in seconds) since the stream started."
+          },
+          {
+            "type": "int",
+            "name": "num-total-frames",
+            "description": "Total number of frames transmitted since the stream started."
+          },
+          {
+            "type": "int",
+            "name": "num-dropped-frames",
+            "description": "Number of frames dropped by the encoder since the stream started."
+          },
+          {
+            "type": "double",
+            "name": "fps",
+            "description": "Current framerate."
+          },
+          {
+            "type": "string",
+            "name": "file-path",
+            "description": "The path to the recording output file."
+          }
+        ],
+        "names": [
+          {
+            "name": "",
+            "description": "StreamStatus"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "4.0"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "StreamStatus"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
       }
     ],
     "recording": [
@@ -961,7 +1046,8 @@
           "{boolean (optional)} `recording` Current recording state.",
           "{int (optional)} `total-record-time` Total time (in seconds) since recording started.",
           "{int (optional)} `total-record-bytes` Total bytes recorded since the recording started.",
-          "{int (optional)} `total-record-frames` Total frames recorded since the recording started."
+          "{int (optional)} `total-record-frames` Total frames recorded since the recording started.",
+          "{int (optional)} `total-record-dropped` Total frames dropped since the recording started."
         ],
         "api": "events",
         "name": "Heartbeat",
@@ -1021,6 +1107,11 @@
             "type": "int (optional)",
             "name": "total-record-frames",
             "description": "Total frames recorded since the recording started."
+          },
+          {
+            "type": "int (optional)",
+            "name": "total-record-dropped",
+            "description": "Total frames dropped since the recording started."
           }
         ],
         "names": [
@@ -1735,6 +1826,490 @@
         "heading": {
           "level": 2,
           "text": "ListProfiles"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      }
+    ],
+    "streaming": [
+      {
+        "subheads": [],
+        "description": "Get current recording status.",
+        "return": [
+          "{boolean} `recording` Current recording status.",
+          "{String (optional)} `stream-timecode` Time elapsed since streaming started (only present if currently streaming).",
+          "{String (optional)} `rec-timecode` Time elapsed since recording started (only present if currently recording).",
+          "{boolean} `preview-only` Always false. Retrocompatibility with OBSRemote."
+        ],
+        "api": "requests",
+        "name": "GetStreamingStatus",
+        "category": "streaming",
+        "since": "0.3",
+        "returns": [
+          {
+            "type": "boolean",
+            "name": "recording",
+            "description": "Current recording status."
+          },
+          {
+            "type": "String (optional)",
+            "name": "stream-timecode",
+            "description": "Time elapsed since streaming started (only present if currently streaming)."
+          },
+          {
+            "type": "String (optional)",
+            "name": "rec-timecode",
+            "description": "Time elapsed since recording started (only present if currently recording)."
+          },
+          {
+            "type": "boolean",
+            "name": "preview-only",
+            "description": "Always false. Retrocompatibility with OBSRemote."
+          }
+        ],
+        "names": [
+          {
+            "name": "",
+            "description": "GetStreamingStatus"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "0.3"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "GetStreamingStatus"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Get current streaming and recording status.",
+        "return": [
+          "{boolean} `streaming` Current streaming status.",
+          "{boolean} `recording` Current recording status.",
+          "{String (optional)} `stream-timecode` Time elapsed since streaming started (only present if currently streaming).",
+          "{String (optional)} `rec-timecode` Time elapsed since recording started (only present if currently recording).",
+          "{boolean} `preview-only` Always false. Retrocompatibility with OBSRemote."
+        ],
+        "api": "requests",
+        "name": "GetStreamingStatus",
+        "category": "streaming",
+        "since": "0.3",
+        "returns": [
+          {
+            "type": "boolean",
+            "name": "streaming",
+            "description": "Current streaming status."
+          },
+          {
+            "type": "boolean",
+            "name": "recording",
+            "description": "Current recording status."
+          },
+          {
+            "type": "String (optional)",
+            "name": "stream-timecode",
+            "description": "Time elapsed since streaming started (only present if currently streaming)."
+          },
+          {
+            "type": "String (optional)",
+            "name": "rec-timecode",
+            "description": "Time elapsed since recording started (only present if currently recording)."
+          },
+          {
+            "type": "boolean",
+            "name": "preview-only",
+            "description": "Always false. Retrocompatibility with OBSRemote."
+          }
+        ],
+        "names": [
+          {
+            "name": "",
+            "description": "GetStreamingStatus"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "0.3"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "GetStreamingStatus"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Toggle streaming on or off.",
+        "api": "requests",
+        "name": "StartStopStreaming",
+        "category": "streaming",
+        "since": "0.3",
+        "names": [
+          {
+            "name": "",
+            "description": "StartStopStreaming"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "0.3"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "StartStopStreaming"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Start streaming.\nWill return an `error` if streaming is already active.",
+        "param": [
+          "{Object (optional)} `stream` Special stream configuration. Please note: these won't be saved to OBS' configuration.",
+          "{String (optional)} `stream.type` If specified ensures the type of stream matches the given type (usually 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does not match the given stream type, all settings must be specified in the `settings` object or an error will occur when starting the stream.",
+          "{Object (optional)} `stream.metadata` Adds the given object parameters as encoded query string parameters to the 'key' of the RTMP stream. Used to pass data to the RTMP service about the streaming. May be any String, Numeric, or Boolean field.",
+          "{Object (optional)} `stream.settings` Settings for the stream.",
+          "{String (optional)} `stream.settings.server` The publish URL.",
+          "{String (optional)} `stream.settings.key` The publish key of the stream.",
+          "{boolean (optional)} `stream.settings.use-auth` Indicates whether authentication should be used when connecting to the streaming server.",
+          "{String (optional)} `stream.settings.username` If authentication is enabled, the username for the streaming server. Ignored if `use-auth` is not set to `true`.",
+          "{String (optional)} `stream.settings.password` If authentication is enabled, the password for the streaming server. Ignored if `use-auth` is not set to `true`."
+        ],
+        "api": "requests",
+        "name": "StartStreaming",
+        "category": "streaming",
+        "since": "4.1.0",
+        "params": [
+          {
+            "type": "Object (optional)",
+            "name": "stream",
+            "description": "Special stream configuration. Please note: these won't be saved to OBS' configuration."
+          },
+          {
+            "type": "String (optional)",
+            "name": "stream.type",
+            "description": "If specified ensures the type of stream matches the given type (usually 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does not match the given stream type, all settings must be specified in the `settings` object or an error will occur when starting the stream."
+          },
+          {
+            "type": "Object (optional)",
+            "name": "stream.metadata",
+            "description": "Adds the given object parameters as encoded query string parameters to the 'key' of the RTMP stream. Used to pass data to the RTMP service about the streaming. May be any String, Numeric, or Boolean field."
+          },
+          {
+            "type": "Object (optional)",
+            "name": "stream.settings",
+            "description": "Settings for the stream."
+          },
+          {
+            "type": "String (optional)",
+            "name": "stream.settings.server",
+            "description": "The publish URL."
+          },
+          {
+            "type": "String (optional)",
+            "name": "stream.settings.key",
+            "description": "The publish key of the stream."
+          },
+          {
+            "type": "boolean (optional)",
+            "name": "stream.settings.use-auth",
+            "description": "Indicates whether authentication should be used when connecting to the streaming server."
+          },
+          {
+            "type": "String (optional)",
+            "name": "stream.settings.username",
+            "description": "If authentication is enabled, the username for the streaming server. Ignored if `use-auth` is not set to `true`."
+          },
+          {
+            "type": "String (optional)",
+            "name": "stream.settings.password",
+            "description": "If authentication is enabled, the password for the streaming server. Ignored if `use-auth` is not set to `true`."
+          }
+        ],
+        "names": [
+          {
+            "name": "",
+            "description": "StartStreaming"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "4.1.0"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "StartStreaming"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Stop streaming.\nWill return an `error` if streaming is not active.",
+        "api": "requests",
+        "name": "StopStreaming",
+        "category": "streaming",
+        "since": "4.1.0",
+        "names": [
+          {
+            "name": "",
+            "description": "StopStreaming"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "4.1.0"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "StopStreaming"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Sets one or more attributes of the current streaming server settings. Any options not passed will remain unchanged. Returns the updated settings in response. If 'type' is different than the current streaming service type, all settings are required. Returns the full settings of the stream (the same as GetStreamSettings).",
+        "param": [
+          "{String} `type` The type of streaming service configuration, usually `rtmp_custom` or `rtmp_common`.",
+          "{Object} `settings` The actual settings of the stream.",
+          "{String (optional)} `settings.server` The publish URL.",
+          "{String (optional)} `settings.key` The publish key.",
+          "{boolean (optional)} `settings.use-auth` Indicates whether authentication should be used when connecting to the streaming server.",
+          "{String (optional)} `settings.username` The username for the streaming service.",
+          "{String (optional)} `settings.password` The password for the streaming service.",
+          "{boolean} `save` Persist the settings to disk."
+        ],
+        "api": "requests",
+        "name": "SetStreamSettings",
+        "category": "streaming",
+        "since": "4.1.0",
+        "params": [
+          {
+            "type": "String",
+            "name": "type",
+            "description": "The type of streaming service configuration, usually `rtmp_custom` or `rtmp_common`."
+          },
+          {
+            "type": "Object",
+            "name": "settings",
+            "description": "The actual settings of the stream."
+          },
+          {
+            "type": "String (optional)",
+            "name": "settings.server",
+            "description": "The publish URL."
+          },
+          {
+            "type": "String (optional)",
+            "name": "settings.key",
+            "description": "The publish key."
+          },
+          {
+            "type": "boolean (optional)",
+            "name": "settings.use-auth",
+            "description": "Indicates whether authentication should be used when connecting to the streaming server."
+          },
+          {
+            "type": "String (optional)",
+            "name": "settings.username",
+            "description": "The username for the streaming service."
+          },
+          {
+            "type": "String (optional)",
+            "name": "settings.password",
+            "description": "The password for the streaming service."
+          },
+          {
+            "type": "boolean",
+            "name": "save",
+            "description": "Persist the settings to disk."
+          }
+        ],
+        "names": [
+          {
+            "name": "",
+            "description": "SetStreamSettings"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "4.1.0"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "SetStreamSettings"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Get the current streaming server settings.",
+        "return": [
+          "{String} `type` The type of streaming service configuration. Possible values: 'rtmp_custom' or 'rtmp_common'.",
+          "{Object} `settings` Stream settings object.",
+          "{String} `settings.server` The publish URL.",
+          "{String} `settings.key` The publish key of the stream.",
+          "{boolean} `settings.use-auth` Indicates whether authentication should be used when connecting to the streaming server.",
+          "{String} `settings.username` The username to use when accessing the streaming server. Only present if `use-auth` is `true`.",
+          "{String} `settings.password` The password to use when accessing the streaming server. Only present if `use-auth` is `true`."
+        ],
+        "api": "requests",
+        "name": "GetStreamSettings",
+        "category": "streaming",
+        "since": "4.1.0",
+        "returns": [
+          {
+            "type": "String",
+            "name": "type",
+            "description": "The type of streaming service configuration. Possible values: 'rtmp_custom' or 'rtmp_common'."
+          },
+          {
+            "type": "Object",
+            "name": "settings",
+            "description": "Stream settings object."
+          },
+          {
+            "type": "String",
+            "name": "settings.server",
+            "description": "The publish URL."
+          },
+          {
+            "type": "String",
+            "name": "settings.key",
+            "description": "The publish key of the stream."
+          },
+          {
+            "type": "boolean",
+            "name": "settings.use-auth",
+            "description": "Indicates whether authentication should be used when connecting to the streaming server."
+          },
+          {
+            "type": "String",
+            "name": "settings.username",
+            "description": "The username to use when accessing the streaming server. Only present if `use-auth` is `true`."
+          },
+          {
+            "type": "String",
+            "name": "settings.password",
+            "description": "The password to use when accessing the streaming server. Only present if `use-auth` is `true`."
+          }
+        ],
+        "names": [
+          {
+            "name": "",
+            "description": "GetStreamSettings"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "4.1.0"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "GetStreamSettings"
+        },
+        "lead": "",
+        "type": "class",
+        "examples": []
+      },
+      {
+        "subheads": [],
+        "description": "Save the current streaming server settings to disk.",
+        "api": "requests",
+        "name": "SaveStreamSettings",
+        "category": "streaming",
+        "since": "4.1.0",
+        "names": [
+          {
+            "name": "",
+            "description": "SaveStreamSettings"
+          }
+        ],
+        "categories": [
+          {
+            "name": "",
+            "description": "streaming"
+          }
+        ],
+        "sinces": [
+          {
+            "name": "",
+            "description": "4.1.0"
+          }
+        ],
+        "heading": {
+          "level": 2,
+          "text": "SaveStreamSettings"
         },
         "lead": "",
         "type": "class",
@@ -5154,429 +5729,6 @@
         "heading": {
           "level": 2,
           "text": "SetSourceFilterSettings"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      }
-    ],
-    "streaming": [
-      {
-        "subheads": [],
-        "description": "Get current streaming and recording status.",
-        "return": [
-          "{boolean} `streaming` Current streaming status.",
-          "{boolean} `recording` Current recording status.",
-          "{String (optional)} `stream-timecode` Time elapsed since streaming started (only present if currently streaming).",
-          "{String (optional)} `rec-timecode` Time elapsed since recording started (only present if currently recording).",
-          "{boolean} `preview-only` Always false. Retrocompatibility with OBSRemote."
-        ],
-        "api": "requests",
-        "name": "GetStreamingStatus",
-        "category": "streaming",
-        "since": "0.3",
-        "returns": [
-          {
-            "type": "boolean",
-            "name": "streaming",
-            "description": "Current streaming status."
-          },
-          {
-            "type": "boolean",
-            "name": "recording",
-            "description": "Current recording status."
-          },
-          {
-            "type": "String (optional)",
-            "name": "stream-timecode",
-            "description": "Time elapsed since streaming started (only present if currently streaming)."
-          },
-          {
-            "type": "String (optional)",
-            "name": "rec-timecode",
-            "description": "Time elapsed since recording started (only present if currently recording)."
-          },
-          {
-            "type": "boolean",
-            "name": "preview-only",
-            "description": "Always false. Retrocompatibility with OBSRemote."
-          }
-        ],
-        "names": [
-          {
-            "name": "",
-            "description": "GetStreamingStatus"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "streaming"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "0.3"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "GetStreamingStatus"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      },
-      {
-        "subheads": [],
-        "description": "Toggle streaming on or off.",
-        "api": "requests",
-        "name": "StartStopStreaming",
-        "category": "streaming",
-        "since": "0.3",
-        "names": [
-          {
-            "name": "",
-            "description": "StartStopStreaming"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "streaming"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "0.3"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "StartStopStreaming"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      },
-      {
-        "subheads": [],
-        "description": "Start streaming.\nWill return an `error` if streaming is already active.",
-        "param": [
-          "{Object (optional)} `stream` Special stream configuration. Please note: these won't be saved to OBS' configuration.",
-          "{String (optional)} `stream.type` If specified ensures the type of stream matches the given type (usually 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does not match the given stream type, all settings must be specified in the `settings` object or an error will occur when starting the stream.",
-          "{Object (optional)} `stream.metadata` Adds the given object parameters as encoded query string parameters to the 'key' of the RTMP stream. Used to pass data to the RTMP service about the streaming. May be any String, Numeric, or Boolean field.",
-          "{Object (optional)} `stream.settings` Settings for the stream.",
-          "{String (optional)} `stream.settings.server` The publish URL.",
-          "{String (optional)} `stream.settings.key` The publish key of the stream.",
-          "{boolean (optional)} `stream.settings.use-auth` Indicates whether authentication should be used when connecting to the streaming server.",
-          "{String (optional)} `stream.settings.username` If authentication is enabled, the username for the streaming server. Ignored if `use-auth` is not set to `true`.",
-          "{String (optional)} `stream.settings.password` If authentication is enabled, the password for the streaming server. Ignored if `use-auth` is not set to `true`."
-        ],
-        "api": "requests",
-        "name": "StartStreaming",
-        "category": "streaming",
-        "since": "4.1.0",
-        "params": [
-          {
-            "type": "Object (optional)",
-            "name": "stream",
-            "description": "Special stream configuration. Please note: these won't be saved to OBS' configuration."
-          },
-          {
-            "type": "String (optional)",
-            "name": "stream.type",
-            "description": "If specified ensures the type of stream matches the given type (usually 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does not match the given stream type, all settings must be specified in the `settings` object or an error will occur when starting the stream."
-          },
-          {
-            "type": "Object (optional)",
-            "name": "stream.metadata",
-            "description": "Adds the given object parameters as encoded query string parameters to the 'key' of the RTMP stream. Used to pass data to the RTMP service about the streaming. May be any String, Numeric, or Boolean field."
-          },
-          {
-            "type": "Object (optional)",
-            "name": "stream.settings",
-            "description": "Settings for the stream."
-          },
-          {
-            "type": "String (optional)",
-            "name": "stream.settings.server",
-            "description": "The publish URL."
-          },
-          {
-            "type": "String (optional)",
-            "name": "stream.settings.key",
-            "description": "The publish key of the stream."
-          },
-          {
-            "type": "boolean (optional)",
-            "name": "stream.settings.use-auth",
-            "description": "Indicates whether authentication should be used when connecting to the streaming server."
-          },
-          {
-            "type": "String (optional)",
-            "name": "stream.settings.username",
-            "description": "If authentication is enabled, the username for the streaming server. Ignored if `use-auth` is not set to `true`."
-          },
-          {
-            "type": "String (optional)",
-            "name": "stream.settings.password",
-            "description": "If authentication is enabled, the password for the streaming server. Ignored if `use-auth` is not set to `true`."
-          }
-        ],
-        "names": [
-          {
-            "name": "",
-            "description": "StartStreaming"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "streaming"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "4.1.0"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "StartStreaming"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      },
-      {
-        "subheads": [],
-        "description": "Stop streaming.\nWill return an `error` if streaming is not active.",
-        "api": "requests",
-        "name": "StopStreaming",
-        "category": "streaming",
-        "since": "4.1.0",
-        "names": [
-          {
-            "name": "",
-            "description": "StopStreaming"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "streaming"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "4.1.0"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "StopStreaming"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      },
-      {
-        "subheads": [],
-        "description": "Sets one or more attributes of the current streaming server settings. Any options not passed will remain unchanged. Returns the updated settings in response. If 'type' is different than the current streaming service type, all settings are required. Returns the full settings of the stream (the same as GetStreamSettings).",
-        "param": [
-          "{String} `type` The type of streaming service configuration, usually `rtmp_custom` or `rtmp_common`.",
-          "{Object} `settings` The actual settings of the stream.",
-          "{String (optional)} `settings.server` The publish URL.",
-          "{String (optional)} `settings.key` The publish key.",
-          "{boolean (optional)} `settings.use-auth` Indicates whether authentication should be used when connecting to the streaming server.",
-          "{String (optional)} `settings.username` The username for the streaming service.",
-          "{String (optional)} `settings.password` The password for the streaming service.",
-          "{boolean} `save` Persist the settings to disk."
-        ],
-        "api": "requests",
-        "name": "SetStreamSettings",
-        "category": "streaming",
-        "since": "4.1.0",
-        "params": [
-          {
-            "type": "String",
-            "name": "type",
-            "description": "The type of streaming service configuration, usually `rtmp_custom` or `rtmp_common`."
-          },
-          {
-            "type": "Object",
-            "name": "settings",
-            "description": "The actual settings of the stream."
-          },
-          {
-            "type": "String (optional)",
-            "name": "settings.server",
-            "description": "The publish URL."
-          },
-          {
-            "type": "String (optional)",
-            "name": "settings.key",
-            "description": "The publish key."
-          },
-          {
-            "type": "boolean (optional)",
-            "name": "settings.use-auth",
-            "description": "Indicates whether authentication should be used when connecting to the streaming server."
-          },
-          {
-            "type": "String (optional)",
-            "name": "settings.username",
-            "description": "The username for the streaming service."
-          },
-          {
-            "type": "String (optional)",
-            "name": "settings.password",
-            "description": "The password for the streaming service."
-          },
-          {
-            "type": "boolean",
-            "name": "save",
-            "description": "Persist the settings to disk."
-          }
-        ],
-        "names": [
-          {
-            "name": "",
-            "description": "SetStreamSettings"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "streaming"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "4.1.0"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "SetStreamSettings"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      },
-      {
-        "subheads": [],
-        "description": "Get the current streaming server settings.",
-        "return": [
-          "{String} `type` The type of streaming service configuration. Possible values: 'rtmp_custom' or 'rtmp_common'.",
-          "{Object} `settings` Stream settings object.",
-          "{String} `settings.server` The publish URL.",
-          "{String} `settings.key` The publish key of the stream.",
-          "{boolean} `settings.use-auth` Indicates whether authentication should be used when connecting to the streaming server.",
-          "{String} `settings.username` The username to use when accessing the streaming server. Only present if `use-auth` is `true`.",
-          "{String} `settings.password` The password to use when accessing the streaming server. Only present if `use-auth` is `true`."
-        ],
-        "api": "requests",
-        "name": "GetStreamSettings",
-        "category": "streaming",
-        "since": "4.1.0",
-        "returns": [
-          {
-            "type": "String",
-            "name": "type",
-            "description": "The type of streaming service configuration. Possible values: 'rtmp_custom' or 'rtmp_common'."
-          },
-          {
-            "type": "Object",
-            "name": "settings",
-            "description": "Stream settings object."
-          },
-          {
-            "type": "String",
-            "name": "settings.server",
-            "description": "The publish URL."
-          },
-          {
-            "type": "String",
-            "name": "settings.key",
-            "description": "The publish key of the stream."
-          },
-          {
-            "type": "boolean",
-            "name": "settings.use-auth",
-            "description": "Indicates whether authentication should be used when connecting to the streaming server."
-          },
-          {
-            "type": "String",
-            "name": "settings.username",
-            "description": "The username to use when accessing the streaming server. Only present if `use-auth` is `true`."
-          },
-          {
-            "type": "String",
-            "name": "settings.password",
-            "description": "The password to use when accessing the streaming server. Only present if `use-auth` is `true`."
-          }
-        ],
-        "names": [
-          {
-            "name": "",
-            "description": "GetStreamSettings"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "streaming"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "4.1.0"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "GetStreamSettings"
-        },
-        "lead": "",
-        "type": "class",
-        "examples": []
-      },
-      {
-        "subheads": [],
-        "description": "Save the current streaming server settings to disk.",
-        "api": "requests",
-        "name": "SaveStreamSettings",
-        "category": "streaming",
-        "since": "4.1.0",
-        "names": [
-          {
-            "name": "",
-            "description": "SaveStreamSettings"
-          }
-        ],
-        "categories": [
-          {
-            "name": "",
-            "description": "streaming"
-          }
-        ],
-        "sinces": [
-          {
-            "name": "",
-            "description": "4.1.0"
-          }
-        ],
-        "heading": {
-          "level": 2,
-          "text": "SaveStreamSettings"
         },
         "lead": "",
         "type": "class",

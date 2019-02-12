@@ -65,6 +65,7 @@ auth_response = base64_encode(auth_response_hash)
     + [StreamStopping](#streamstopping)
     + [StreamStopped](#streamstopped)
     + [StreamStatus](#streamstatus)
+    + [StreamStatus](#streamstatus-1)
   * [Recording](#recording)
     + [RecordingStarting](#recordingstarting)
     + [RecordingStarted](#recordingstarted)
@@ -99,6 +100,15 @@ auth_response = base64_encode(auth_response_hash)
     + [SetCurrentProfile](#setcurrentprofile)
     + [GetCurrentProfile](#getcurrentprofile)
     + [ListProfiles](#listprofiles)
+  * [Streaming](#streaming-1)
+    + [GetStreamingStatus](#getstreamingstatus)
+    + [GetStreamingStatus](#getstreamingstatus-1)
+    + [StartStopStreaming](#startstopstreaming)
+    + [StartStreaming](#startstreaming)
+    + [StopStreaming](#stopstreaming)
+    + [SetStreamSettings](#setstreamsettings)
+    + [GetStreamSettings](#getstreamsettings)
+    + [SaveStreamSettings](#savestreamsettings)
   * [Recording](#recording-1)
     + [StartStopRecording](#startstoprecording)
     + [StartRecording](#startrecording)
@@ -154,14 +164,6 @@ auth_response = base64_encode(auth_response_hash)
     + [ReorderSourceFilter](#reordersourcefilter)
     + [MoveSourceFilter](#movesourcefilter)
     + [SetSourceFilterSettings](#setsourcefiltersettings)
-  * [Streaming](#streaming-1)
-    + [GetStreamingStatus](#getstreamingstatus)
-    + [StartStopStreaming](#startstopstreaming)
-    + [StartStreaming](#startstreaming)
-    + [StopStreaming](#stopstreaming)
-    + [SetStreamSettings](#setstreamsettings)
-    + [GetStreamSettings](#getstreamsettings)
-    + [SaveStreamSettings](#savestreamsettings)
   * [Studio Mode](#studio-mode-1)
     + [GetStudioModeStatus](#getstudiomodestatus)
     + [GetPreviewScene](#getpreviewscene)
@@ -456,6 +458,29 @@ Emit every 2 seconds.
 
 ---
 
+### StreamStatus
+
+
+- Added in v4.0
+
+Emit every 2 seconds.
+
+**Response Items:**
+
+| Name | Type  | Description |
+| ---- | :---: | ------------|
+| `recording` | _boolean_ | Current recording state. |
+| `bytes-written` | _int_ | Amount of data per second (in bytes) transmitted by the stream encoder. |
+| `kbits-written` | _int_ | Amount of data per second (in kilobits) transmitted by the stream encoder. |
+| `total-record-time` | _int_ | Total time (in seconds) since the stream started. |
+| `num-total-frames` | _int_ | Total number of frames transmitted since the stream started. |
+| `num-dropped-frames` | _int_ | Number of frames dropped by the encoder since the stream started. |
+| `fps` | _double_ | Current framerate. |
+| `file-path` | _string_ | The path to the recording output file. |
+
+
+---
+
 ## Recording
 
 ### RecordingStarting
@@ -603,6 +628,7 @@ Emitted every 2 seconds after enabling it by calling SetHeartbeat.
 | `total-record-time` | _int (optional)_ | Total time (in seconds) since recording started. |
 | `total-record-bytes` | _int (optional)_ | Total bytes recorded since the recording started. |
 | `total-record-frames` | _int (optional)_ | Total frames recorded since the recording started. |
+| `total-record-dropped` | _int (optional)_ | Total frames dropped since the recording started. |
 
 
 ---
@@ -915,6 +941,189 @@ _No specified parameters._
 | ---- | :---: | ------------|
 | `profiles` | _Array&lt;Object&gt;_ | List of available profiles. |
 
+
+---
+
+## Streaming
+
+### GetStreamingStatus
+
+
+- Added in v0.3
+
+Get current recording status.
+
+**Request Fields:**
+
+_No specified parameters._
+
+**Response Items:**
+
+| Name | Type  | Description |
+| ---- | :---: | ------------|
+| `recording` | _boolean_ | Current recording status. |
+| `stream-timecode` | _String (optional)_ | Time elapsed since streaming started (only present if currently streaming). |
+| `rec-timecode` | _String (optional)_ | Time elapsed since recording started (only present if currently recording). |
+| `preview-only` | _boolean_ | Always false. Retrocompatibility with OBSRemote. |
+
+
+---
+
+### GetStreamingStatus
+
+
+- Added in v0.3
+
+Get current streaming and recording status.
+
+**Request Fields:**
+
+_No specified parameters._
+
+**Response Items:**
+
+| Name | Type  | Description |
+| ---- | :---: | ------------|
+| `streaming` | _boolean_ | Current streaming status. |
+| `recording` | _boolean_ | Current recording status. |
+| `stream-timecode` | _String (optional)_ | Time elapsed since streaming started (only present if currently streaming). |
+| `rec-timecode` | _String (optional)_ | Time elapsed since recording started (only present if currently recording). |
+| `preview-only` | _boolean_ | Always false. Retrocompatibility with OBSRemote. |
+
+
+---
+
+### StartStopStreaming
+
+
+- Added in v0.3
+
+Toggle streaming on or off.
+
+**Request Fields:**
+
+_No specified parameters._
+
+**Response Items:**
+
+_No additional response items._
+
+---
+
+### StartStreaming
+
+
+- Added in v4.1.0
+
+Start streaming.
+Will return an `error` if streaming is already active.
+
+**Request Fields:**
+
+| Name | Type  | Description |
+| ---- | :---: | ------------|
+| `stream` | _Object (optional)_ | Special stream configuration. Please note: these won't be saved to OBS' configuration. |
+| `stream.type` | _String (optional)_ | If specified ensures the type of stream matches the given type (usually 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does not match the given stream type, all settings must be specified in the `settings` object or an error will occur when starting the stream. |
+| `stream.metadata` | _Object (optional)_ | Adds the given object parameters as encoded query string parameters to the 'key' of the RTMP stream. Used to pass data to the RTMP service about the streaming. May be any String, Numeric, or Boolean field. |
+| `stream.settings` | _Object (optional)_ | Settings for the stream. |
+| `stream.settings.server` | _String (optional)_ | The publish URL. |
+| `stream.settings.key` | _String (optional)_ | The publish key of the stream. |
+| `stream.settings.use-auth` | _boolean (optional)_ | Indicates whether authentication should be used when connecting to the streaming server. |
+| `stream.settings.username` | _String (optional)_ | If authentication is enabled, the username for the streaming server. Ignored if `use-auth` is not set to `true`. |
+| `stream.settings.password` | _String (optional)_ | If authentication is enabled, the password for the streaming server. Ignored if `use-auth` is not set to `true`. |
+
+
+**Response Items:**
+
+_No additional response items._
+
+---
+
+### StopStreaming
+
+
+- Added in v4.1.0
+
+Stop streaming.
+Will return an `error` if streaming is not active.
+
+**Request Fields:**
+
+_No specified parameters._
+
+**Response Items:**
+
+_No additional response items._
+
+---
+
+### SetStreamSettings
+
+
+- Added in v4.1.0
+
+Sets one or more attributes of the current streaming server settings. Any options not passed will remain unchanged. Returns the updated settings in response. If 'type' is different than the current streaming service type, all settings are required. Returns the full settings of the stream (the same as GetStreamSettings).
+
+**Request Fields:**
+
+| Name | Type  | Description |
+| ---- | :---: | ------------|
+| `type` | _String_ | The type of streaming service configuration, usually `rtmp_custom` or `rtmp_common`. |
+| `settings` | _Object_ | The actual settings of the stream. |
+| `settings.server` | _String (optional)_ | The publish URL. |
+| `settings.key` | _String (optional)_ | The publish key. |
+| `settings.use-auth` | _boolean (optional)_ | Indicates whether authentication should be used when connecting to the streaming server. |
+| `settings.username` | _String (optional)_ | The username for the streaming service. |
+| `settings.password` | _String (optional)_ | The password for the streaming service. |
+| `save` | _boolean_ | Persist the settings to disk. |
+
+
+**Response Items:**
+
+_No additional response items._
+
+---
+
+### GetStreamSettings
+
+
+- Added in v4.1.0
+
+Get the current streaming server settings.
+
+**Request Fields:**
+
+_No specified parameters._
+
+**Response Items:**
+
+| Name | Type  | Description |
+| ---- | :---: | ------------|
+| `type` | _String_ | The type of streaming service configuration. Possible values: 'rtmp_custom' or 'rtmp_common'. |
+| `settings` | _Object_ | Stream settings object. |
+| `settings.server` | _String_ | The publish URL. |
+| `settings.key` | _String_ | The publish key of the stream. |
+| `settings.use-auth` | _boolean_ | Indicates whether authentication should be used when connecting to the streaming server. |
+| `settings.username` | _String_ | The username to use when accessing the streaming server. Only present if `use-auth` is `true`. |
+| `settings.password` | _String_ | The password to use when accessing the streaming server. Only present if `use-auth` is `true`. |
+
+
+---
+
+### SaveStreamSettings
+
+
+- Added in v4.1.0
+
+Save the current streaming server settings to disk.
+
+**Request Fields:**
+
+_No specified parameters._
+
+**Response Items:**
+
+_No additional response items._
 
 ---
 
@@ -2138,166 +2347,6 @@ Update settings of a filter
 | `filterName` | _String_ | Name of the filter to reconfigure |
 | `filterSettings` | _Object_ | New settings. These will be merged to the current filter settings. |
 
-
-**Response Items:**
-
-_No additional response items._
-
----
-
-## Streaming
-
-### GetStreamingStatus
-
-
-- Added in v0.3
-
-Get current streaming and recording status.
-
-**Request Fields:**
-
-_No specified parameters._
-
-**Response Items:**
-
-| Name | Type  | Description |
-| ---- | :---: | ------------|
-| `streaming` | _boolean_ | Current streaming status. |
-| `recording` | _boolean_ | Current recording status. |
-| `stream-timecode` | _String (optional)_ | Time elapsed since streaming started (only present if currently streaming). |
-| `rec-timecode` | _String (optional)_ | Time elapsed since recording started (only present if currently recording). |
-| `preview-only` | _boolean_ | Always false. Retrocompatibility with OBSRemote. |
-
-
----
-
-### StartStopStreaming
-
-
-- Added in v0.3
-
-Toggle streaming on or off.
-
-**Request Fields:**
-
-_No specified parameters._
-
-**Response Items:**
-
-_No additional response items._
-
----
-
-### StartStreaming
-
-
-- Added in v4.1.0
-
-Start streaming.
-Will return an `error` if streaming is already active.
-
-**Request Fields:**
-
-| Name | Type  | Description |
-| ---- | :---: | ------------|
-| `stream` | _Object (optional)_ | Special stream configuration. Please note: these won't be saved to OBS' configuration. |
-| `stream.type` | _String (optional)_ | If specified ensures the type of stream matches the given type (usually 'rtmp_custom' or 'rtmp_common'). If the currently configured stream type does not match the given stream type, all settings must be specified in the `settings` object or an error will occur when starting the stream. |
-| `stream.metadata` | _Object (optional)_ | Adds the given object parameters as encoded query string parameters to the 'key' of the RTMP stream. Used to pass data to the RTMP service about the streaming. May be any String, Numeric, or Boolean field. |
-| `stream.settings` | _Object (optional)_ | Settings for the stream. |
-| `stream.settings.server` | _String (optional)_ | The publish URL. |
-| `stream.settings.key` | _String (optional)_ | The publish key of the stream. |
-| `stream.settings.use-auth` | _boolean (optional)_ | Indicates whether authentication should be used when connecting to the streaming server. |
-| `stream.settings.username` | _String (optional)_ | If authentication is enabled, the username for the streaming server. Ignored if `use-auth` is not set to `true`. |
-| `stream.settings.password` | _String (optional)_ | If authentication is enabled, the password for the streaming server. Ignored if `use-auth` is not set to `true`. |
-
-
-**Response Items:**
-
-_No additional response items._
-
----
-
-### StopStreaming
-
-
-- Added in v4.1.0
-
-Stop streaming.
-Will return an `error` if streaming is not active.
-
-**Request Fields:**
-
-_No specified parameters._
-
-**Response Items:**
-
-_No additional response items._
-
----
-
-### SetStreamSettings
-
-
-- Added in v4.1.0
-
-Sets one or more attributes of the current streaming server settings. Any options not passed will remain unchanged. Returns the updated settings in response. If 'type' is different than the current streaming service type, all settings are required. Returns the full settings of the stream (the same as GetStreamSettings).
-
-**Request Fields:**
-
-| Name | Type  | Description |
-| ---- | :---: | ------------|
-| `type` | _String_ | The type of streaming service configuration, usually `rtmp_custom` or `rtmp_common`. |
-| `settings` | _Object_ | The actual settings of the stream. |
-| `settings.server` | _String (optional)_ | The publish URL. |
-| `settings.key` | _String (optional)_ | The publish key. |
-| `settings.use-auth` | _boolean (optional)_ | Indicates whether authentication should be used when connecting to the streaming server. |
-| `settings.username` | _String (optional)_ | The username for the streaming service. |
-| `settings.password` | _String (optional)_ | The password for the streaming service. |
-| `save` | _boolean_ | Persist the settings to disk. |
-
-
-**Response Items:**
-
-_No additional response items._
-
----
-
-### GetStreamSettings
-
-
-- Added in v4.1.0
-
-Get the current streaming server settings.
-
-**Request Fields:**
-
-_No specified parameters._
-
-**Response Items:**
-
-| Name | Type  | Description |
-| ---- | :---: | ------------|
-| `type` | _String_ | The type of streaming service configuration. Possible values: 'rtmp_custom' or 'rtmp_common'. |
-| `settings` | _Object_ | Stream settings object. |
-| `settings.server` | _String_ | The publish URL. |
-| `settings.key` | _String_ | The publish key of the stream. |
-| `settings.use-auth` | _boolean_ | Indicates whether authentication should be used when connecting to the streaming server. |
-| `settings.username` | _String_ | The username to use when accessing the streaming server. Only present if `use-auth` is `true`. |
-| `settings.password` | _String_ | The password to use when accessing the streaming server. Only present if `use-auth` is `true`. |
-
-
----
-
-### SaveStreamSettings
-
-
-- Added in v4.1.0
-
-Save the current streaming server settings to disk.
-
-**Request Fields:**
-
-_No specified parameters._
 
 **Response Items:**
 

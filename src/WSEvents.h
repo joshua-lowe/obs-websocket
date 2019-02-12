@@ -56,6 +56,7 @@ public:
 private slots:
 	void deferredInitOperations();
 	void StreamStatus();
+	void RecordStatus();
 	void Heartbeat();
 	void TransitionDurationChanged(int ms);
 

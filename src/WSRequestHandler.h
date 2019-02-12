@@ -78,6 +78,7 @@ class WSRequestHandler : public QObject {
 		static HandlerResponse HandleReorderSceneItems(WSRequestHandler* req);
 
 		static HandlerResponse HandleGetStreamingStatus(WSRequestHandler* req);
+		static HandlerResponse HandleGetRecordingStatus(WSRequestHandler* req);
 		static HandlerResponse HandleStartStopStreaming(WSRequestHandler* req);
 		static HandlerResponse HandleStartStopRecording(WSRequestHandler* req);
 		static HandlerResponse HandleStartStreaming(WSRequestHandler* req);
