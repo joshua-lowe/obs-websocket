@@ -65,7 +65,6 @@ auth_response = base64_encode(auth_response_hash)
     + [StreamStopping](#streamstopping)
     + [StreamStopped](#streamstopped)
     + [StreamStatus](#streamstatus)
-    + [StreamStatus](#streamstatus-1)
   * [Recording](#recording)
     + [RecordingStarting](#recordingstarting)
     + [RecordingStarted](#recordingstarted)
@@ -78,6 +77,8 @@ auth_response = base64_encode(auth_response_hash)
     + [ReplayStopped](#replaystopped)
   * [Other](#other)
     + [Exiting](#exiting)
+  * [Recroding](#recroding)
+    + [RecrodStatus](#recrodstatus)
   * [General](#general)
     + [Heartbeat](#heartbeat)
   * [Sources](#sources)
@@ -458,29 +459,6 @@ Emit every 2 seconds.
 
 ---
 
-### StreamStatus
-
-
-- Added in v4.0
-
-Emit every 2 seconds.
-
-**Response Items:**
-
-| Name | Type  | Description |
-| ---- | :---: | ------------|
-| `recording` | _boolean_ | Current recording state. |
-| `bytes-written` | _int_ | Amount of data per second (in bytes) transmitted by the stream encoder. |
-| `kbits-written` | _int_ | Amount of data per second (in kilobits) transmitted by the stream encoder. |
-| `total-record-time` | _int_ | Total time (in seconds) since the stream started. |
-| `num-total-frames` | _int_ | Total number of frames transmitted since the stream started. |
-| `num-dropped-frames` | _int_ | Number of frames dropped by the encoder since the stream started. |
-| `fps` | _double_ | Current framerate. |
-| `file-path` | _string_ | The path to the recording output file. |
-
-
----
-
 ## Recording
 
 ### RecordingStarting
@@ -601,6 +579,30 @@ OBS is exiting.
 **Response Items:**
 
 _No additional response items._
+
+---
+
+## Recroding
+
+### RecrodStatus
+
+
+- Added in v4.0
+
+Emit every 2 seconds.
+
+**Response Items:**
+
+| Name | Type  | Description |
+| ---- | :---: | ------------|
+| `recording` | _boolean_ | Current recording state. |
+| `bytes-written` | _int_ | Amount of data per second (in bytes) transmitted by the stream encoder. |
+| `total-record-time` | _int_ | Total time (in seconds) since the stream started. |
+| `num-total-frames` | _int_ | Total number of frames transmitted since the stream started. |
+| `num-dropped-frames` | _int_ | Number of frames dropped by the encoder since the stream started. |
+| `fps` | _double_ | Current framerate. |
+| `file-path` | _string_ | The path to the recording output file. |
+
 
 ---
 
